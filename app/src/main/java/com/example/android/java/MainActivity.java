@@ -1,8 +1,11 @@
 package com.example.android.java;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private RelativeLayout canvas;
+    private static final String TAG = "AnimationEvents";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,37 @@ public class MainActivity extends AppCompatActivity {
 //        animator.setInterpolator(new LinearInterpolator());
 //        animator.setInterpolator(new AnticipateOvershootInterpolator());
           animator.setInterpolator(new BounceInterpolator());
+          animator.setRepeatCount(2);
+
+          animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+              @Override
+              public void onAnimationUpdate(ValueAnimator animation) {
+                  Log.i(TAG, "onAnimationUpdate: " + animation.getAnimatedValue());
+              }
+          });
+
+          animator.addListener(new Animator.AnimatorListener() {
+              @Override
+              public void onAnimationStart(Animator animator) {
+                  Log.i(TAG, "onAnimationStart");
+              }
+
+              @Override
+              public void onAnimationEnd(Animator animator) {
+                  Log.i(TAG, "onAnimationEnd");
+              }
+
+              @Override
+              public void onAnimationCancel(Animator animator) {
+
+              }
+
+              @Override
+              public void onAnimationRepeat(Animator animator) {
+                  Log.i(TAG, "onAnimationRepeat");
+              }
+          });
+
 
         animator.start();
     }
